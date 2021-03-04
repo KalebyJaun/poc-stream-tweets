@@ -10,14 +10,14 @@ services:
     env_file:
       - ./hadoop-hive.env
     ports:
-      - "50070:50070"
+      - 50070:50070
+      - 8020:8020
     networks:
       - stream-tweets
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
     
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
@@ -33,12 +33,12 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==worker
+        constraints: [node.labels.role==worker]
+        max_replicas_per_node: 1
+      replicas: 2
 
   resourcemanager:
-    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop2.7.4-java8
+    image: resource-manager
     environment:
       SERVICE_PRECONDITION: "namenode:50070 datanode:50075"
     env_file:
@@ -48,8 +48,7 @@ services:
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
 
   hive-server:
     image: bde2020/hive:2.3.2-postgresql-metastore
@@ -65,8 +64,7 @@ services:
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
 
   hive-metastore:
     image: bde2020/hive:2.3.2-postgresql-metastore
@@ -82,8 +80,7 @@ services:
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
 
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0
@@ -94,8 +91,7 @@ services:
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
 
   huedb:
     image: postgres:12.1-alpine
@@ -112,11 +108,10 @@ services:
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
   
   hue:
-    image: gethue/hue:4.6.0
+    image: gethue/hue
     environment:
         SERVICE_PRECONDITION: "namenode:50070 datanode:50075 hive-metastore-postgresql:5432 resourcemanager:8088 hive-metastore:9083 huedb:5000"
     ports:
@@ -130,8 +125,7 @@ services:
     deploy:
       placement:
         # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
-        constraints:
-          - node.labels.role==master
+        constraints: [node.labels.role==master]
 
 volumes:
   namenode:
