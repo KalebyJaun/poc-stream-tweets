@@ -16,7 +16,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
     
   datanode:
@@ -47,7 +46,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
 
   hive-server:
@@ -63,7 +61,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
 
   hive-metastore:
@@ -79,7 +76,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
 
   hive-metastore-postgresql:
@@ -90,7 +86,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
 
   huedb:
@@ -107,7 +102,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
   
   hue:
@@ -124,7 +118,6 @@ services:
       - stream-tweets
     deploy:
       placement:
-        # set node labels using docker node update --label-add key=value <NODE ID> from swarm manager
         constraints: [node.labels.role==master]
 
 volumes:
