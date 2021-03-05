@@ -48,9 +48,9 @@ services:
       - stream-tweets
     deploy:
       placement:
-        constraints: [node.labels.role==worker]
+        constraints: [node.labels.role==master]
         max_replicas_per_node: 1
-      replicas: 2
+      replicas: 1
 
   schema-registry:
     image: confluentinc/cp-schema-registry:6.1.0
