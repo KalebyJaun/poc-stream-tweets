@@ -13,4 +13,8 @@ class KafkaConnector():
 
     def produce(self, topic, msg_key, message):
         self.producer.produce(topic, key=msg_key, value=message)
-        print("msg enviada: " + msg_key)
+        print("msg sent: " + msg_key)
+
+    def flush_producer(self):
+        print("flushing the producer")
+        self.producer.flush(30)
